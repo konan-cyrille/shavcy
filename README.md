@@ -7,5 +7,5 @@ activé l'environnement virtuel
 
 cloner le repository : git clone path_to_repo
 
-exécuter : pip install requirements.txt
+exécuter : pip install -r requirements.txt
 

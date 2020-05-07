@@ -10,9 +10,10 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_arra
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
+import json
 
 
-class TrainingModel():
+class TrainingModel:
     #def test(self):
     #    return print("coucou je suis une methode de la classe TrainingModel")
     """
@@ -128,11 +129,27 @@ class TrainingModel():
         # création d'un dossier s'il n'exite pas, pour enrégistrer les checkpoints du model
         if not os.path.isdir(self.__trained_model_dir):
             os.mkdir(self.__trained_model_dir)
+
+        if not os.path.isdir(self.__model_class_dir):
+            os.mkdir(self.__model_class_dir)
+
+        class_indices = train_generator.class_indices
+        ind_class_json = {}
+        for cl in class_indices:
+            ind_class_json[class_indices[cl]] = cl
+
+        with open(os.path.join(self.__model_class_dir, "model_class.json"), "w") as json_file:
+            json.dump(ind_class_json, json_file, indent=4, separators=(",", " : "),
+                      ensure_ascii=True)
+
+        print("""Un document json à été crée avec le mappage des différentes classes
+                    et leur indices""")
+
         filepath = os.path.join(self.__trained_model_dir,
                                 "model-weights-epoch={epoch:02d}-val_loss={val_loss:.3f}-val_acc={val_accuracy:.3f}.h5")
-        # filepath = "models/model-weights-epoch={epoch:02d}-val_loss={val_loss:.3f}-val_acc={val_accuracy:.3f}.h5"
-        checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='max',
-                                     period=1)
+
+        checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='max', period=1)
+
         callbacks_list = [checkpoint]
 
         history = model.fit(train_generator, steps_per_epoch=int(num_train / BATCH_SIZE),

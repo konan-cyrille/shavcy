@@ -60,7 +60,7 @@ class TrainingModel():
             print(os.getcwd())
             split_folders.ratio(folder_to_split, output=self.__data_dir, seed=seed, ratio=ratio)
         else:
-            print("le dossier {} existe déjà".fromat(self.__train_dir))
+            print("le dossier {} existe déjà".format(self.__train_dir))
 
 
     def build_model(self):
@@ -132,7 +132,7 @@ class TrainingModel():
                                 "model-weights-epoch={epoch:02d}-val_loss={val_loss:.3f}-val_acc={val_accuracy:.3f}.h5")
         # filepath = "models/model-weights-epoch={epoch:02d}-val_loss={val_loss:.3f}-val_acc={val_accuracy:.3f}.h5"
         checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='max',
-                                     save_freq='epoch')
+                                     period=1)
         callbacks_list = [checkpoint]
 
         history = model.fit(train_generator, steps_per_epoch=int(num_train / BATCH_SIZE),

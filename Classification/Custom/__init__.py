@@ -12,6 +12,17 @@ from tensorflow.keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
 import json
 
+"""from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+# exécuter un code ecrit en tensorflow 1.x dans un environnement tensorflow 2.x
+import tensorflow.compat.v1
+tensorflow.compat.v1.disable_v2_behavior()
+
+config = ConfigProto(allow_soft_placement=True)
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)"""
+
 
 class TrainingModel:
     #def test(self):
